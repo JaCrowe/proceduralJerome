@@ -1,0 +1,4 @@
+#!/bin/bash
+# ffmpeg -framerate 24 -i out/capture_%03d.png output.mp4
+ffmpeg -i out/capture_%03d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p out.mp4
+rm out/*
