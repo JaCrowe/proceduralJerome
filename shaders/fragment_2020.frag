@@ -1,3 +1,4 @@
+// Stolen from https://www.shadertoy.com/view/wtcGDl
 #version 120
 #define SURF_DIST 0.001
 #define MAX_STEPS 64
