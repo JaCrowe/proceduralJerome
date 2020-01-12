@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     const float width = 800;
     const float height = 800;
 
-    const std::string fragmentShader = "shaders/fragment_diffuse.frag";
+    const std::string fragmentShader = "shaders/fragment_diamondlattice.frag";
     const std::string fragmentShader1 = "shaders/fragment_normal.frag";
     const std::string fragmentShader2 = "shaders/fragment_normal_warp.frag";
     const std::string vertexShader = "shaders/vertex_shader.vert";
@@ -133,10 +133,11 @@ int main(int argc, char **argv)
                 window.close();
         }
 
-        float time = frameCount / 60.;
+        // result["save"].as<bool>()
+        float time = frameCount * (result["save"].as<bool>() ? 10.0 : 1.0);
 
         // persistentTexture
-        shader_0.setUniform("texture", persistentTexture);
+        // shader_0.setUniform("texture", persistentTexture);
         shader_0.setUniform("iTime", time);
         pass_0.clear();
         pass_0.draw(shape, &shader_0);
@@ -147,19 +148,19 @@ int main(int argc, char **argv)
             pass_1.draw(shape, &shader_1);
             finalTexture = pass_1.getTexture();
             */
+        /*
         persistentTexture = pass_0.getTexture();
-
         shader_1.setUniform("texture", persistentTexture);
         pass_1.draw(shape, &shader_1);
         pass1Texture = pass_1.getTexture();
-
         shader_2.setUniform("iTime", time);
         shader_2.setUniform("normalTexture", pass1Texture);
         pass_2.clear();
         pass_2.draw(shape, &shader_2);
-        finalTexture = pass_2.getTexture();
-        // finalTexture = persistentTexture;
+        */
 
+        finalTexture = pass_0.getTexture(); // pass_2.getTexture();
+                                            // finalTexture = persistentTexture;
         frameCount++;
 
         /*
