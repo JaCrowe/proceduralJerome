@@ -32,6 +32,7 @@
 *.app
 
 shadertown
+procedural_jerome
 out/*
 *.mp4
 

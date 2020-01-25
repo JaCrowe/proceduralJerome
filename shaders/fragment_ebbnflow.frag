@@ -101,7 +101,7 @@ void main(){
     uv.x = uv.x/iResolution.x;
     uv.y = uv.y/iResolution.y;
     uv-=0.5;
-    float time = iTime/10000000.0;
+    float time = iTime/2000.0;
     float girth = 12.0;
     float yaSon = 0.5 + sin(time) + 1.5*snoise(vec3(uv.x*girth + time, time, uv.y*girth + time));
     uv *= rotMat2D(time);
