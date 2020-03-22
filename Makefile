@@ -1,5 +1,3 @@
-all: main.o
-	g++ main.o -o procedural_jerome -lsfml-graphics -lsfml-window -lsfml-system
+all:
+	g++ src/main.cpp src/pjfile.cpp src/pjshader.cpp src/pjmanager.cpp -o procedural_jerome -lSDL2 -lGLEW -lGLU -lGL
 
-assemble: 
-	g++ -c main.cpp
