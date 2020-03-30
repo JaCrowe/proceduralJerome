@@ -1,6 +1,11 @@
-uniform vec2 iResolution;
-uniform vec2 iMouse;
-uniform float iTime;
+#version 130
+in vec4 v_color;
+out vec4 o_color;
+uniform float i_time;
+uniform vec2 i_resolution;
+
+// uniform vec2 iResolution;
+// uniform float iTime;
 
 //	Simplex 3D Noise 
 //	by Ian McEwan, Ashima Arts
@@ -98,10 +103,11 @@ mat2 rotMat2D(float a) {
 
 void main(){
     vec2 uv = gl_FragCoord.xy;
-    uv.x = uv.x/iResolution.x;
-    uv.y = uv.y/iResolution.y;
+    uv.x = uv.x/i_resolution.x;
+    uv.y = uv.y/i_resolution.y;
     uv-=0.5;
-    float time = iTime/2000.0;
+    // float time = i_time/2000.0;
+    float time = i_time;
     float girth = 12.0;
     float yaSon = 0.5 + sin(time) + 1.5*snoise(vec3(uv.x*girth + time, time, uv.y*girth + time));
     uv *= rotMat2D(time);
@@ -116,5 +122,6 @@ void main(){
     yaSon = smoothstep(edge - epsilon, edge + epsilon, yaSon );
     vec3 col = mix(col1, col3, yaSon);
     col = mix(col, vec3(1.),  smoothstep(edge - epsilon, edge + epsilon, 1.5*length(uv) ));
-  	gl_FragColor = vec4(col,  1.0);
+  	// gl_FragColor = vec4(col,  1.0);
+    o_color = vec4(col,  1.0);
 }

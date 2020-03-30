@@ -13,16 +13,16 @@
 
 #### Compilation
 
-Assuming you're running on Linux or Mac
+Assuming you're running on Linux
 
 ```bash
 make
 ```
 
-If you're stuck developing on windows then I hope their little bash terminal project they've been working on is far along enough for you to use.
+If you're developing on mac this will probably work. If you're stuck developing on windows then I'm sorry.
 
 #### Running
 
 ```bash
-./proceduralJerome
+./procedural_jerome
 ```

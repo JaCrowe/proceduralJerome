@@ -1,9 +1,11 @@
 #ifndef PJ_Manager
 #define PJ_Manager
 #include "pjshader.h"
+#include "pjgeometry.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GLES3/gl3.h>
+#include "pjtypes.h"
 
 typedef float t_mat4x4[16];
 
@@ -34,12 +36,6 @@ static inline void mat4x4_ortho(t_mat4x4 out, float left, float right, float bot
 #undef T
 }
 
-typedef enum t_attrib_id
-{
-    attrib_position,
-    attrib_color
-} t_attrib_id;
-
 class PJManager
 {
 private:
@@ -47,18 +43,18 @@ private:
     SDL_GLContext context;
     GLuint vao, vbo;
     int width, height;
+    double time = 0;
 
 public:
     GLuint program;
 
     PJManager();
-    // ~PJManager(){};
     ~PJManager();
     void initSDL();
     void initOpenGL();
     void initGeometry();
     void init();
     void bindShaders(PJShader *shader);
-    int initLoop();
+    int initLoop(PJGeometry *geo);
 };
 #endif

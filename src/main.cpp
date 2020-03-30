@@ -6,7 +6,13 @@
 #include <fstream>
 #include "pjshader.h"
 #include "pjmanager.h"
+#include "pjgeometry.h"
 #include <list>
+
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+// #include <ffmpeg/swscale>
+#include "/usr/include/x86_64-linux-gnu/libswscale/swscale.h"
 
 #define GL_GLEXT_PROTOTYPES
 using namespace std;
@@ -17,12 +23,14 @@ int main(int argc, char *argv[])
 
     PJShader *pjShader = new PJShader("shaders/simple.vert");
     pjShader->addShader("shaders/simple.vert");
-    pjShader->addShader("shaders/simple.frag", true);
+    // pjShader->addShader("shaders/simple.frag", true);
+    pjShader->addShader("shaders/fragment_ebbnflow.frag", true);
+    pjShader->bindShaders(pjManager->program);
 
-    pjManager->bindShaders(pjShader);
     pjManager->initOpenGL();
+    PJGeometry *flatGeo = new PJGeometry();
     pjManager->initGeometry();
-    pjManager->initLoop();
+    pjManager->initLoop(flatGeo);
 
     return 0;
 }

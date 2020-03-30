@@ -1,4 +1,5 @@
 #include "pjmanager.h"
+#include "pjgeometry.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
@@ -17,7 +18,7 @@ void PJManager::initSDL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     width = 800;
-    height = 600;
+    height = 800;
 
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     context = SDL_GL_CreateContext(window);
@@ -33,36 +34,16 @@ void PJManager::initOpenGL()
 
     glUseProgram(program);
 
+    glUniform1f(glGetUniformLocation(program, "i_time"), time);
+    glUniform2f(glGetUniformLocation(program, "i_resolution"), width, height);
+
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.5, 0.0, 0.0, 0.0);
     glViewport(0, 0, width, height);
-
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
 }
 
 void PJManager::initGeometry()
 {
-    glEnableVertexAttribArray(attrib_position);
-    glEnableVertexAttribArray(attrib_color);
-
-    glVertexAttribPointer(attrib_color, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
-    glVertexAttribPointer(attrib_position, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void *)(4 * sizeof(float)));
-
-    const GLfloat g_vertex_buffer_data[] = {
-        /*  R, G, B, A, X, Y  */
-        1, 0, 0, 1, 0, 0,
-        0, 1, 0, 1, width, 0,
-        0, 0, 1, 1, width, height,
-
-        1, 0, 0, 1, 0, 0,
-        0, 0, 1, 1, width, height,
-        1, 1, 1, 1, 0, height};
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
     t_mat4x4 projection_matrix;
     mat4x4_ortho(projection_matrix, 0.0f, (float)width, (float)height, 0.0f, 0.0f, 100.0f);
     glUniformMatrix4fv(glGetUniformLocation(program, "u_projection_matrix"), 1, GL_FALSE, projection_matrix);
@@ -73,14 +54,12 @@ PJManager::PJManager()
     initSDL();
 }
 
-// bindShaders
 void PJManager::bindShaders(PJShader *shader)
 {
-
     shader->bindShaders(program);
 }
 
-int PJManager::initLoop()
+int PJManager::initLoop(PJGeometry *geo)
 {
     for (;;)
     {
@@ -98,9 +77,11 @@ int PJManager::initLoop()
             }
         }
 
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        time += 0.005;
 
+        geo->bindGeo();
+        glUniform1f(glGetUniformLocation(program, "i_time"), time);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         SDL_GL_SwapWindow(window);
         SDL_Delay(1);
     }
