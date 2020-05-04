@@ -1,5 +1,9 @@
-uniform float iTime;
-uniform vec2 iResolution;
+#version 130
+in vec4 v_color;
+out vec4 o_color;
+uniform float i_time;
+uniform vec2 i_resolution;
+
 #define PERIOD 20.
 #define PI 3.14159265359
 #define S(a,b,t) smoothstep(a,b,t)
@@ -34,11 +38,11 @@ mat2 rotMat2D(float a) {
 
 void main(){
     float sin120 = 0.86602540378;
-    vec2 aspect = vec2(iResolution.x*3., iResolution.y*2.*sin120);
-    vec2 offset = vec2(cos(iTime/600.));
+    vec2 aspect = vec2(i_resolution.x*3., i_resolution.y*2.*sin120);
+    vec2 offset = vec2(cos(i_time/0.6));
 
-    vec2 fragCoord = (0.5 - gl_FragCoord + offset*aspect/100.0)/aspect;
-    float effectivePeriod = PERIOD + sin(iTime/120.);
+    vec2 fragCoord = (0.5 - gl_FragCoord.xy + offset*aspect/100.0)/aspect;
+    float effectivePeriod = PERIOD + sin(i_time/0.12);
     vec2 uv= fract(effectivePeriod*fragCoord + offset);
     uv.y-=0.5;
     uv.x*=3.;
@@ -53,7 +57,7 @@ void main(){
     vec2 r2 = vec2(0.5, sin120);
     vec2 r3 = vec2(0.5, -sin120);
     
-    // index/=iResolution;
+    // index/=i_resolution;
     vec2 p0 = vec2(0., -sin120);
     vec2 p1 = vec2(0., sin120);
     vec2 p2 = vec2(1., -sin120);
@@ -94,5 +98,6 @@ void main(){
     vec4 color = mix(cellColor, vec4(0.), intensity);
     vec4 color1 = mix(vec4(0), vec4(0., 1., 0., 1.), intensity1);
 
-    gl_FragColor = color;
+    // gl_FragColor = color;
+    o_color = color;
     }

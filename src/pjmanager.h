@@ -42,7 +42,7 @@ private:
     SDL_Window *window;
     SDL_GLContext context;
     GLuint vao, vbo;
-    int width, height;
+    float width, height;
     double time = 0;
 
 public:

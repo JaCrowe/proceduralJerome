@@ -9,7 +9,7 @@
 class PJGeometry
 {
 private:
-    int width, height;
+    float width, height;
 
 public:
     GLuint vao, vbo;
@@ -18,5 +18,7 @@ public:
     ~PJGeometry();
     void init();
     void bindGeo();
+
+    GLfloat *g_vertex_buffer_data_yup;
 };
 #endif

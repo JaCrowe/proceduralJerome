@@ -19,7 +19,7 @@ void PJGeometry::init()
     glVertexAttribPointer(attrib_color, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
     glVertexAttribPointer(attrib_position, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void *)(4 * sizeof(float)));
 
-    const GLfloat g_vertex_buffer_data[] = {
+    GLfloat g_vertex_buffer_data[] = {
         /*  R, G, B, A, X, Y  */
         1, 0, 0, 1, 0, 0,
         0, 1, 0, 1, width, 0,
@@ -29,10 +29,13 @@ void PJGeometry::init()
         0, 0, 1, 1, width, height,
         1, 1, 1, 1, 0, height};
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+    g_vertex_buffer_data_yup = g_vertex_buffer_data;
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data_yup, GL_STATIC_DRAW);
 }
 void PJGeometry::bindGeo()
 {
+
     glBindVertexArray(vao);
 }
 
