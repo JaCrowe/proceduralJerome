@@ -3,6 +3,7 @@ in vec4 v_color;
 out vec4 o_color;
 uniform float i_time;
 uniform vec2 i_resolution;
+uniform vec2 i_mouse;
 
 // Created by inigo quilez - iq/2014
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
@@ -47,9 +48,9 @@ vec3 map( vec2 p )
 {   
     p *= 0.7;
 
-    float f = dot( fbm2( 1.0*(0.05*i_time + p + fbm2(-0.05*i_time+2.0*(p + fbm2(4.0*p)))) ), vec2(1.0,-1.0) );
+    float f = dot( fbm2( 1.0*(0.05*i_time + p*i_mouse.x/i_resolution.x*2.0 + fbm2(-0.05*i_time+2.0*(p + fbm2(4.0*p)))*i_mouse.y/i_resolution.y) ), vec2(1.0,-1.0) );
 
-    float bl = smoothstep( -0.8, 0.8, f );
+    float bl = smoothstep( -0.8, 0.8 , f );
 
     float ti = smoothstep( -1.0, 1.0, fbm(p) );
 

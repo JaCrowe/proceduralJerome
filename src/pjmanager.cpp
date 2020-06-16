@@ -36,6 +36,7 @@ void PJManager::initOpenGL()
 
     glUniform1f(glGetUniformLocation(program, "i_time"), time);
     glUniform2f(glGetUniformLocation(program, "i_resolution"), width, height);
+    glUniform2f(glGetUniformLocation(program, "i_mouse"), width / 2.0, height / 2.0);
 
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.5, 0.0, 0.0, 0.0);
@@ -45,7 +46,21 @@ void PJManager::initOpenGL()
 void PJManager::initGeometry()
 {
     t_mat4x4 projection_matrix;
-    mat4x4_ortho(projection_matrix, 0.0f, (float)width, (float)height, 0.0f, 0.0f, 100.0f);
+
+    float angleOfView = 90;
+    float near = 0.1;
+    float far = 100;
+    float imageAspectRatio = width / (float)height;
+    // Perspective code
+    float b, t, l, r;
+    std::cout << "Height, width? " << height << ", " << width << std::endl;
+    gluPerspective(angleOfView, imageAspectRatio, near, far, b, t, l, r);
+    std::cout << "b, t, l, r, near, far? " << b << ", " << t << ", " << l << ", " << r << ", " << near << ", " << far << std::endl;
+    glFrustum(b, t, l, r, near, far, projection_matrix);
+    std::cout << projection_matrix << std::endl;
+    // Ortho code
+    // mat4x4_ortho(projection_matrix, 0.0f, (float)width, (float)height, 0.0f, 0.0f, 100.0f);
+
     glUniformMatrix4fv(glGetUniformLocation(program, "u_projection_matrix"), 1, GL_FALSE, projection_matrix);
 }
 
@@ -57,6 +72,11 @@ PJManager::PJManager()
 void PJManager::bindShaders(PJShader *shader)
 {
     shader->bindShaders(program);
+}
+
+void PJManager::tweenPosition(int target, float *value)
+{
+    *value = *value + (((float)target) - *value) * 0.01;
 }
 
 int PJManager::initLoop(PJGeometry *geo)
@@ -74,12 +94,16 @@ int PJManager::initLoop(PJGeometry *geo)
                 if (event.key.keysym.sym == SDLK_ESCAPE)
                     return 0;
                 break;
+            case SDL_MOUSEMOTION:
+                SDL_GetMouseState(&mouseTargetX, &mouseTargetY);
             }
         }
 
         time += 0.005;
-
+        tweenPosition(mouseTargetX, &mouseX);
+        tweenPosition(mouseTargetY, &mouseY);
         geo->bindGeo();
+        glUniform2f(glGetUniformLocation(program, "i_mouse"), mouseX, mouseY);
         glUniform1f(glGetUniformLocation(program, "i_time"), time);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         SDL_GL_SwapWindow(window);

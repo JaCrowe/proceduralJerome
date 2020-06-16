@@ -3,6 +3,7 @@ in vec4 v_color;
 out vec4 o_color;
 uniform float i_time;
 uniform vec2 i_resolution;
+uniform vec2 i_mouse;
 
 // Star Nest by Pablo Roman Andrioli
 
@@ -33,11 +34,12 @@ void main()
 	vec3 dir=vec3(uv*zoom,1.);
 	float time=i_time*speed+.25;
 
+
 	//mouse rotation
-	// float a1=.5+iMouse.x/i_resolution.x*2.;
-	// float a2=.8+iMouse.y/i_resolution.y*2.;
-    float a1=.5+0.5/i_resolution.x*2.;
-	float a2=.8+0.5/i_resolution.y*2.;
+	float a1=.5+i_mouse.x/i_resolution.x/20.;
+	float a2=.8+i_mouse.y/i_resolution.y/20.;
+    // float a1=.5+0.5/i_resolution.x*2.;
+	// float a2=.8+0.5/i_resolution.y*2.;
 	mat2 rot1=mat2(cos(a1),sin(a1),-sin(a1),cos(a1));
 	mat2 rot2=mat2(cos(a2),sin(a2),-sin(a2),cos(a2));
 	dir.xz*=rot1;

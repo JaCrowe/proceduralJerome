@@ -108,7 +108,7 @@ void main(){
     // uv-=0.5;
     // float time = i_time/2000.0;
     float time = i_time;
-    float girth = 2.0 - 2.0*cos(time*1.0);
+    float girth = 11.0 - 10.0*cos(time/10.0);
     float yaSon = 0.5 + sin(time) + 1.5*snoise(vec3(uv.x*girth + time, time, uv.y*girth + time));
     uv *= rotMat2D(time);
     float yaBoi = 0.5 + sin(time) + 1.5*snoise(vec3(uv.x*girth + time, time, uv.y*girth + time));

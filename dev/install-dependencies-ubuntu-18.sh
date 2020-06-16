@@ -1,0 +1,1 @@
+sudo apt install build-essential libsdl2-dev libgles2-mesa-dev libglew-dev libavcodec-dev libavformat-dev ibswscale-dev 
