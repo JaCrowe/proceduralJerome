@@ -56,5 +56,6 @@ public:
     void init();
     void bindShaders(PJShader *shader);
     int initLoop(PJGeometry *geo);
+
 };
 #endif

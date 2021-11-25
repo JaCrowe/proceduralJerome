@@ -3,6 +3,19 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+void Screenshot(int x, int y, int w, int h, const char * filename)
+    {
+        unsigned char * pixels = new unsigned char[w*h*4]; // 4 bytes for RGBA
+        glReadPixels(x,y,w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+        SDL_Surface * surf = SDL_CreateRGBSurfaceFrom(pixels, w, h, 8*4, w*4, 0,0,0,0);
+        SDL_SaveBMP(surf, filename);
+
+        SDL_FreeSurface(surf);
+        delete [] pixels;
+    }
+
+
 void PJManager::initSDL()
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -82,7 +95,24 @@ int PJManager::initLoop(PJGeometry *geo)
         geo->bindGeo();
         glUniform1f(glGetUniformLocation(program, "i_time"), time);
         glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        std::string fName = "out/out_";
+        fName += std::to_string(time);
+        fName += ".bmp";
+
+        Screenshot(0,0,width,height,fName.c_str());
+        // unsigned char * pixels = new unsigned char[width*height*4]; // 4 bytes for RGBA
+        // glReadPixels(0,0,width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+        // SDL_Surface * surf = SDL_CreateRGBSurfaceFrom(pixels, width, height, 8*4, width*4, 0,0,0,0);
+        // SDL_SaveBMP(surf, fName.c_str());
+
+        // SDL_FreeSurface(surf);
+        // delete [] pixels;
+
         SDL_GL_SwapWindow(window);
+
+
         SDL_Delay(1);
     }
 

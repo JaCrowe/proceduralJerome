@@ -15,7 +15,7 @@ PJShader::PJShader(const char *_file_path, bool is_fragment)
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE)
     {
-        fprintf(stderr, "vertex shader compilation failed\n");
+        fprintf(stderr, "shader compilation failed\n");
     }
 }
 
@@ -31,7 +31,7 @@ void PJShader::addShader(const char *_file_path, bool is_fragment)
     glGetShaderiv(thisShader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE)
     {
-        fprintf(stderr, "vertex shader compilation failed\n");
+        fprintf(stderr, "shader compilation failed\n");
     }
     shaders.push_back(thisShader);
 }
