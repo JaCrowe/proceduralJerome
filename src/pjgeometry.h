@@ -9,7 +9,7 @@
 class PJGeometry
 {
 private:
-    int width, height;
+    GLfloat width, height;
 
 public:
     GLuint vao, vbo;

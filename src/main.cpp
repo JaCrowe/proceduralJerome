@@ -23,7 +23,8 @@ int main(int argc, char *argv[])
     PJShader *pjShader = new PJShader("shaders/simple.vert");
     pjShader->addShader("shaders/simple.vert");
     // pjShader->addShader("shaders/simple.frag", true);
-    pjShader->addShader("shaders/fragment_ebbnflow.frag", true);
+    // pjShader->addShader("shaders/fragment_ebbnflow.frag", true);
+    pjShader->addShader("shaders/fragment_diamondlattice.frag", true);
     pjShader->bindShaders(pjManager->program);
 
     pjManager->initOpenGL();
