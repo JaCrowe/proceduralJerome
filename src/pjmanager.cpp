@@ -92,32 +92,18 @@ int PJManager::initLoop(PJGeometry *geo)
         }
 
         frame++;
-        // time += 0.005;
 
         geo->bindGeo();
         glUniform1f(glGetUniformLocation(program, "i_time"), frame*0.005);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // std::string fName = "out/out_";
         char fName[50];
 
         sprintf(fName, "out/capture_%03d.png", frame);
 
-        // fName += std::to_string(time);
-        // fName += ".png";
-
-        Screenshot(0,0,width,height,fName);
-        // unsigned char * pixels = new unsigned char[width*height*4]; // 4 bytes for RGBA
-        // glReadPixels(0,0,width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-        // SDL_Surface * surf = SDL_CreateRGBSurfaceFrom(pixels, width, height, 8*4, width*4, 0,0,0,0);
-        // SDL_SaveBMP(surf, fName.c_str());
-
-        // SDL_FreeSurface(surf);
-        // delete [] pixels;
+        // Screenshot(0,0,width,height,fName);
 
         SDL_GL_SwapWindow(window);
-
 
         SDL_Delay(1);
     }

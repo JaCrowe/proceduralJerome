@@ -1,6 +1,6 @@
 # proceduralJerome
 
-## _WARNING_ If you came here for clean, properly architected code you've come to the WRONG place. You could consider this project physiotherapy for Jerome's atrophied c++/openGL muscles.
+## _WARNING_ If you came here for clean, properly architected code you've come to the WRONG place.
 
 ### Build Instructions
 
