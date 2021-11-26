@@ -43,6 +43,7 @@ private:
     SDL_GLContext context;
     GLuint vao, vbo;
     int width, height;
+    int frame = 0;
     double time = 0;
 
 public:
