@@ -2,27 +2,15 @@
 #include <string.h>
 #include <GLES3/gl3.h>
 #include <vector>
+#include <regex>
+using namespace std;
+PJShader::PJShader(){}
 
-PJShader::PJShader(const char *_file_path, bool is_fragment)
+void PJShader::addShader(const char *_file_path)
 {
     shaderFile = new PJFile(_file_path);
-    shader = glCreateShader(GL_VERTEX_SHADER);
-    const char *vertex_shader = shaderFile->fileContent.c_str();
-    int length = strlen(vertex_shader);
-    glShaderSource(shader, 1, (const GLchar **)&vertex_shader, &length);
-    glCompileShader(shader);
-    GLint status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        fprintf(stderr, "shader compilation failed\n");
-    }
-}
 
-void PJShader::addShader(const char *_file_path, bool is_fragment)
-{
-    shaderFile = new PJFile(_file_path);
-    GLuint thisShader = glCreateShader(is_fragment ? GL_FRAGMENT_SHADER : GL_VERTEX_SHADER);
+    GLuint thisShader = glCreateShader(regex_match(_file_path, regex(".*\\.frag$")) ? GL_FRAGMENT_SHADER : GL_VERTEX_SHADER);
     const char *vertex_shader = shaderFile->fileContent.c_str();
     int length = strlen(vertex_shader);
     glShaderSource(thisShader, 1, (const GLchar **)&vertex_shader, &length);

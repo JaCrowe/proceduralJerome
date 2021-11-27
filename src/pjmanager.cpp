@@ -97,10 +97,8 @@ int PJManager::initLoop(PJGeometry *geo)
         glUniform1f(glGetUniformLocation(program, "i_time"), frame*0.005);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        char fName[50];
-
-        sprintf(fName, "out/capture_%03d.png", frame);
-
+        // char fName[50];
+        // sprintf(fName, "out/capture_%03d.png", frame);
         // Screenshot(0,0,width,height,fName);
 
         SDL_GL_SwapWindow(window);
