@@ -97,7 +97,7 @@ int PJManager::initLoop(PJGeometry *geo)
         frame++;
 
         geo->bindGeo();
-        glUniform1f(glGetUniformLocation(program, "i_time"), frame*0.005);
+        glUniform1f(glGetUniformLocation(program, "i_time"), frame*0.05);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
 

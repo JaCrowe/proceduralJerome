@@ -20,7 +20,6 @@ vec3 dotColor(vec2 uv, int index, float offset, float factor, float time){
     uv.x += (0.2*(index % 10)) ;
     uv.y += (0.2*(floor(index / 10.))) ;
 
-    float theta = atan(uv.x, uv.y);
     // float time_eff = mod(time, PERIOD);
     float time_eff = time;
     
@@ -32,24 +31,17 @@ vec3 dotColor(vec2 uv, int index, float offset, float factor, float time){
     float edge = min(0.002, time_eff*0.01);
     // float girth = 0.015;
     // float girth = 0.005 + pow(max(i_time - 5., 0.)*0.1, 3);
-    float girth = min(time_eff*0.005, 0.4) + pow(max(time_eff*0.5 - 25., 0.)*0.1, 5);
+    float girth = min(time_eff*0.1, 0.05) + pow(max(time_eff - 3., 0.)*0.1, 3);
 
     // float offset = 1.0*isFlip;
     // float factor = (1.0 - 2.0*isFlip);
 
     for (int i = 0 ; i < 3 ; i++) {
-        i_time_prime = time_eff + 0.7*i;
+        i_time_prime = time_eff + 0.05*i;
         // pixelTemp = freakySmear(uv, i_time_prime)* uv;
         pixelTemp = uv;
 
-
-        temp_intensity = smoothstep(
-            girth, 
-            girth + edge, 
-            length(pixelTemp) + 0.01*i 
-                + (0.025 + 0.025*sin(i_time_prime))*sin(theta*8. + i_time_prime)
-        );
-
+        temp_intensity = smoothstep(girth, girth + edge, length(pixelTemp));
         color[i] = offset + factor*temp_intensity; 
     }
     return color;
@@ -64,11 +56,11 @@ void main() {
     vec3 color2 = vec3(0.);
 
     for (int i = 0 ; i < 1 ; i++) {
-        color = dotColor(uv, i, 1., -1., i_time);
-        color2 = dotColor(uv, i, 0., 1., i_time - 10.);
+        color = dotColor(uv, i, 1., -1., i_time) - dotColor(uv, i, 1., -1., i_time - 10.);
+        // color2 += dotColor(uv, i, 0., 1., i_time - 10.);
     }
 
-    color *= min(1., 75. - i_time);
+    // color *= min(1., 15. - i_time);
     vec3 finalColor = color;
     // vec3 finalColor = min(
     //     // To fade in
