@@ -10,7 +10,7 @@ void Screenshot(int x, int y, int w, int h, int frame)
         sprintf(fName, "out/capture_%03d.png", frame);
 
         unsigned char * pixels = new unsigned char[w*h*4]; // 4 bytes for RGBA
-        glReadPixels(x,y,w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+        glReadPixels(x,y,w, h, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
 
         SDL_Surface * surf = SDL_CreateRGBSurfaceFrom(pixels, w, h, 8*4, w*4, 0,0,0,0);
         // SDL_SaveBMP(surf, filename);
@@ -96,10 +96,15 @@ int PJManager::initLoop(PJGeometry *geo)
 
         frame++;
 
-        geo->bindGeo();
-        glUniform1f(glGetUniformLocation(program, "i_time"), frame*0.25);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        float time = frame*0.0025;
 
+        if ( time > 1.0) {
+            return 0;
+        }
+
+        geo->bindGeo();
+        glUniform1f(glGetUniformLocation(program, "i_time"), time);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         Screenshot(0,0,width,height,frame);
 

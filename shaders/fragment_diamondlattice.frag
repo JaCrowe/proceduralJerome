@@ -1,4 +1,4 @@
-#version 400
+#version 440
 in vec4 v_color;
 out vec4 o_color;
 uniform float i_time;
@@ -36,12 +36,15 @@ mat2 rotMat2D(float a) {
 }
 
 void main(){
+    float normal_time = i_time*2.*PI;
+
     float sin120 = 0.86602540378;
     vec2 aspect = vec2(i_resolution.x*3., i_resolution.y*2.*sin120);
-    vec2 offset = vec2(cos(i_time));
+    vec2 offset = vec2(cos(normal_time));
+    // vec2 offset = vec2(0.);
 
     vec2 fragCoord = (0.5 - gl_FragCoord.xy + offset*aspect/100.0)/aspect;
-    float effectivePeriod = PERIOD + sin(i_time);
+    float effectivePeriod = PERIOD + 2.*sin(normal_time);
     vec2 uv= fract(effectivePeriod*fragCoord + offset);
     uv.y-=0.5;
     uv.x*=3.;
