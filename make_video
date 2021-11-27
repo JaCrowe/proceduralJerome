@@ -1,5 +1,6 @@
 ffmpeg \
     -i out/capture_%03d.png \
+    -framerate 60 \
     -c:v libx264 \
     -pix_fmt yuv420p \
     out.mp4
