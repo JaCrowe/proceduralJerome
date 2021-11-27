@@ -44,5 +44,7 @@ void main() {
         color += dotColor(uv, i);
     }
 
+    color *= min(1., 15. - i_time);
+
     o_color = vec4(color.x, color.y, color.z, 1.);
 }
