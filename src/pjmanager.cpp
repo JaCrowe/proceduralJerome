@@ -96,7 +96,7 @@ int PJManager::initLoop(PJGeometry *geo)
 
         frame++;
 
-        float time = frame*0.0025;
+        float time = frame*0.00025;
 
         if ( time > 1.0) {
             return 0;
@@ -106,7 +106,7 @@ int PJManager::initLoop(PJGeometry *geo)
         glUniform1f(glGetUniformLocation(program, "i_time"), time);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        Screenshot(0,0,width,height,frame);
+        // Screenshot(0,0,width,height,frame);
 
         SDL_GL_SwapWindow(window);
 
