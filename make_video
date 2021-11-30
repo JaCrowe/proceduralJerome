@@ -1,6 +1,8 @@
-ffmpeg \
-    -i out/capture_%03d.png \
-    -framerate 60 \
-    -c:v libx264 \
-    -pix_fmt yuv420p \
-    out.mp4
+#ffmpeg \
+#    -i out/capture_%03d.png \
+#    -framerate 60 \
+#    -c:v libx264 \
+#    -pix_fmt yuv420p \
+#    out.mp4
+
+ffmpeg -i audio/17_adult_keem.wav -framerate 60 -start_number 0 -i out/capture_%03d.png -c:v libx264 -r 60 -crf 10 -preset veryslow render4k.mp4 -async 1 -vsync 1

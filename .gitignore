@@ -1,3 +1,6 @@
+# Dem sound files be too big. And I might wanna keep em to myself donno
+*.wav
+
 # Prerequisites
 *.d
 

@@ -256,9 +256,9 @@ void main(){
 
     // float time = i_time/2000.0;
     float girth = 12.0;
-    float yaSon = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time, time, uv.y*girth + time, 0.), vec4(1.,1.,1.,1.));
+    float yaSon = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time, time, uv.y*girth + time, 0.), vec4(100.,100.,100.,100.));
     uv *= rotMat2D(time);
-    float yaBoi = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time, time, uv.y*girth + time, 0.), vec4(1.,1.,1.,1.));
+    float yaBoi = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time, time, uv.y*girth + time, 0.), vec4(100.,100.,100.,100.));
     uv.x+=yaBoi/20.0*sin(time*2.0);
     uv.y-=yaBoi/20.0*cos(time*1.0);
     vec3 col1 = vec3(	.37, .29, .55);
