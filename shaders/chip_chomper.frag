@@ -255,13 +255,13 @@ void main(){
     uv.y = uv.y/i_resolution.y;
     uv-=0.5;
 
-    float radioos = 0.75 + abs(sin(time))*length(uv);
+    float radioos = 0.75 + abs(sin(rageTime))*length(uv);
     uv = uv/radioos;
 
     // float time = i_time/2000.0;
     float girth = 12.0;
     float girth_2 = 1.0;
-    float yaSon = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time/noisePeriod, time/noisePeriod, uv.y*girth + time/noisePeriod, 0.), vec4(noisePeriod));
+    float yaSon = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + rageTime/noisePeriod, rageTime/noisePeriod, uv.y*girth + rageTime/noisePeriod, 0.), vec4(noisePeriod));
     uv *= rotMat2D(time);
     float yaBoi = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth_2 + time, time, uv.y*girth_2 + time, 0.), vec4(noisePeriod));
     uv.x+=yaBoi/20.0*sin(time*2.0);
