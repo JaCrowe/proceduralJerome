@@ -8,6 +8,12 @@ uniform vec2 i_resolution;
 
 // Periodic "Classic" Perlin Noise
 // Classic Perlin noise, periodic version
+// Credit given to Stefan Gustavson
+
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+vec4 fade(vec4 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
 float cnoise(vec4 P, vec4 rep){
   vec4 Pi0 = mod(floor(P), rep); // Integer part modulo rep
   vec4 Pi1 = mod(Pi0 + 1.0, rep); // Integer part + 1 mod rep
@@ -145,8 +151,8 @@ float cnoise(vec4 P, vec4 rep){
 
 //	Simplex 3D Noise 
 //	by Ian McEwan, Ashima Arts
-vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
-vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+// vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+// vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
 
 float snoise(vec3 v){ 
   const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
