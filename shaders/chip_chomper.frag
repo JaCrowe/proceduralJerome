@@ -243,8 +243,12 @@ mat2 rotMat2D(float a) {
 }
 
 void main(){
-    float time = 2.0*PI*i_time;
+    float freakingTime = min(i_time, 1.0 - i_time);
 
+    float time = 2.0*PI*i_time;
+    float rageTime = 2.0*PI*freakingTime;
+
+    float noisePeriod = 2.0*PI;
 
     vec2 uv = gl_FragCoord.xy;
     uv.x = uv.x/i_resolution.x;
@@ -256,9 +260,10 @@ void main(){
 
     // float time = i_time/2000.0;
     float girth = 12.0;
-    float yaSon = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time, time, uv.y*girth + time, 0.), vec4(100.,100.,100.,100.));
+    float girth_2 = 1.0;
+    float yaSon = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time/noisePeriod, time/noisePeriod, uv.y*girth + time/noisePeriod, 0.), vec4(noisePeriod));
     uv *= rotMat2D(time);
-    float yaBoi = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth + time, time, uv.y*girth + time, 0.), vec4(100.,100.,100.,100.));
+    float yaBoi = 0.5 + sin(time) + 1.5*cnoise(vec4(uv.x*girth_2 + time, time, uv.y*girth_2 + time, 0.), vec4(noisePeriod));
     uv.x+=yaBoi/20.0*sin(time*2.0);
     uv.y-=yaBoi/20.0*cos(time*1.0);
     vec3 col1 = vec3(	.37, .29, .55);
