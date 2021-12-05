@@ -6,10 +6,13 @@
 
 #### Dependencies
 
-- OpenGL 3.2
-- SDL 2
-- g++ 7.5.0
-- GNU Make 4.1
+On Ubuntu 21
+- libsdl2-dev
+- libsdl2-image-dev
+- libavcodec-dev
+- libswscale-dev
+
+The OpenGL dependencies will be installed with libsdl. 
 
 #### Compilation
 
