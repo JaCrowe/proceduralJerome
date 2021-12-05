@@ -66,8 +66,9 @@ void PJManager::initGeometry()
     glUniformMatrix4fv(glGetUniformLocation(program, "u_projection_matrix"), 1, GL_FALSE, projection_matrix);
 }
 
-PJManager::PJManager()
+PJManager::PJManager(bool _saveOutput)
 {
+    saveOutput = _saveOutput;
     initSDL();
 }
 
@@ -100,15 +101,18 @@ int PJManager::initLoop(PJGeometry *geo)
         float time = (frame % period)*(1.0/period);
 
         // Alright we really have to start parsing arguments and acting on them lol
-        // if ( frame > period) {
-        //     return 0;
-        // }
+        if ( frame > period && saveOutput) {
+            return 0;
+        }
 
         geo->bindGeo();
         glUniform1f(glGetUniformLocation(program, "i_time"), time);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // Screenshot(0,0,width,height,frame);
+
+        if (saveOutput) {
+            Screenshot(0,0,width,height,frame);
+        }
 
         SDL_GL_SwapWindow(window);
 

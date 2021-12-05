@@ -45,11 +45,12 @@ private:
     int width, height;
     int frame = 0;
     double time = 0;
+    bool saveOutput;
 
 public:
     GLuint program;
 
-    PJManager();
+    PJManager(bool _saveOutput);
     ~PJManager();
     void initSDL();
     void initOpenGL();

@@ -21,6 +21,18 @@ the program may now take in the fragment shader you would like to render as an a
 ./procedural_jerome shaders/chip_chomper.frag
 ```
 
+If you would like to save your frames to output the -s flag may be used, for example:
+```bash
+./procedural_jerome -s shaders/chip_chomper.frag
+```
+
+
+If you would like to render the output frames to video run the make_video script:
+
+```bash
+./make_video
+```
+
 ## Build Instructions
 
 #### Dependencies

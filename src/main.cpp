@@ -18,7 +18,26 @@ using namespace std;
 
 std::string getFragmentShaderFilePath(int argc, char* argv[])
 {
-     return argv[1];
+
+    for (int i = 1 ; i < argc ; i++) {
+        if (argv[i][0] == '-') {
+            continue;
+        } else {
+            return argv[i];
+        }
+    }
+
+     return "";
+}
+
+bool checkSaveFrames(int argc, char* argv[])
+{
+    for (int i = 0 ; i < argc ; i++) {
+        if (argv[i] == std::string("-s")) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -31,9 +50,14 @@ int main(int argc, char *argv[])
         "shaders/fragment_diamondlattice.frag";
 
     cout << "Going to use fragment shader '" << fragmentShaderPath << "'" << endl;
+    bool doSaveFrames = checkSaveFrames(argc, argv);
+
+    if (doSaveFrames) {
+        cout << "Going to save those frames friend!" << endl;
+    }
 
 
-    PJManager *pjManager = new PJManager();
+    PJManager *pjManager = new PJManager(doSaveFrames);
 
     PJShader *pjShader = new PJShader();
     pjShader->addShader("shaders/simple.vert");
