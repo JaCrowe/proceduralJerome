@@ -36,7 +36,7 @@
 
 shadertown
 procedural_jerome
-out/*
+out/
 *.mp4
 
 .vscode

@@ -3,7 +3,7 @@ in vec4 v_color;
 out vec4 o_color;
 uniform float i_time;
 uniform vec2 i_resolution;
-#define PERIOD 10.
+#define PERIOD 15.
 #define PI 3.14159265359
 #define S(a,b,t) smoothstep(a,b,t)
 
@@ -65,13 +65,16 @@ void main(){
         i_resolution.y*2.*sin120
     );
 
-    // Drifts camera
-    // vec2 offset = vec2(cos(normal_time));
-    vec2 offset = vec2(0.);
+    // Switch out comment to enable/disable "camera drift" 
+    vec2 offset = vec2(cos(normal_time));
+    // vec2 offset = vec2(0.);
 
     vec2 fragCoord = (0.5 - gl_FragCoord.xy + offset*aspect/100.0)/aspect;
-    // float effectivePeriod = PERIOD + 2.*sin(normal_time);
-    float effectivePeriod = PERIOD;
+
+    // Switch out comment to enable/disable "camera zoomies" 
+    float effectivePeriod = PERIOD + 2.*sin(normal_time);
+    // float effectivePeriod = PERIOD;
+    
     vec2 uv= fract(
         effectivePeriod*fragCoord
          + offset
@@ -81,7 +84,6 @@ void main(){
     uv.x*=3.;
     uv.x+=0.5;
     uv.y*=sin120*2.;
-
 
     // --- Setting the points of the hexagon (why 8 wtf)
 
@@ -102,7 +104,6 @@ void main(){
     vec3 dotColour = vec3(0., 0., 1.0);
     vec3 dotColours = Dot(uv, p0) * dotColour;
 
-
     // --- Drawing the lines of the hexagon
 
     float lastTwoLines =  Line(uv, p5, p5 + r2) + Line(uv, p5, p5 + r3);
@@ -112,14 +113,12 @@ void main(){
     float anotherOne = Line(uv, vec2(1.5, 0.), vec2(2.5, 0.));
     float finalLine =Line(uv, p6 , p6 + r1) + Line(uv, p7 , p7 + r1);
 
-
     float intensity = 0 
         + lastTwoLines
         + firstTwoLines 
         + thirdTwoLines
         + anotherOne
         + finalLine;
-
 
     // --- The part where the cell colour is determined
 
@@ -148,14 +147,13 @@ void main(){
 
     vec4 cellColor = vec4( intensity_0, intensity_1,intensity_2, 1.0);
 
-
-    // 
-    // vec4 color = mix(cellColor, vec4(0.), intensity);
+    vec4 color = mix(cellColor, vec4(0.), intensity);
     // Debug colour showing lines
-    vec4 color = vec4(vec3(intensity), 0.);
+    vec4 debugLinesColour = vec4(vec3(intensity), 0.);
     vec4 debugDotColour = vec4(dotColours, 1.);
 
 
+    // I gotta keep it 55th street - I have no clue what I was doing here in 2019
     // float intensity1 = Line(
     //     uv, 
     //     vec2(0, -sin120), 
@@ -173,6 +171,5 @@ void main(){
     // float finalIntensity = intensity;
     // vec4 color1 = mix(vec4(0), vec4(0., 1., 0., 1.), intensity1);
 
-    // gl_FragColor = color;
-    o_color = debugDotColour;
+    o_color = color;
 }

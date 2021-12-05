@@ -25,7 +25,7 @@ If you would like to save your frames to output the -s flag may be used, for exa
 ```bash
 ./procedural_jerome -s shaders/chip_chomper.frag
 ```
-
+Note that at the time of writing this will only render 588 frames, the number I wanted for an animation of mine. Es tut mir leid! As development continues I will make sure there's agruments for this option that are accounted for.
 
 If you would like to render the output frames to video run the make_video script:
 
