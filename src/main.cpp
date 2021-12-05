@@ -16,8 +16,23 @@
 #define GL_GLEXT_PROTOTYPES
 using namespace std;
 
+std::string getFragmentShaderFilePath(int argc, char* argv[])
+{
+     return argv[1];
+}
+
+
 int main(int argc, char *argv[])
 {
+
+    std::string parsedFragmentShaderPath = getFragmentShaderFilePath(argc, argv);
+    std::string fragmentShaderPath = parsedFragmentShaderPath.length() > 0 ? 
+        parsedFragmentShaderPath : 
+        "shaders/fragment_diamondlattice.frag";
+
+    cout << "Going to use fragment shader '" << fragmentShaderPath << "'" << endl;
+
+
     PJManager *pjManager = new PJManager();
 
     PJShader *pjShader = new PJShader();
@@ -26,7 +41,10 @@ int main(int argc, char *argv[])
     // pjShader->addShader("shaders/fragment_ebbnflow.frag");
     // pjShader->addShader("shaders/fragment_diamondlattice.frag");
     // pjShader->addShader("shaders/blackout_tuesday.frag");
-    pjShader->addShader("shaders/chip_chomper.frag");
+    // pjShader->addShader("shaders/chip_chomper.frag");
+    pjShader->addShader(fragmentShaderPath.c_str());
+
+
     pjShader->bindShaders(pjManager->program);
 
     pjManager->initOpenGL();

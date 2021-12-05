@@ -100,15 +100,15 @@ int PJManager::initLoop(PJGeometry *geo)
         float time = (frame % period)*(1.0/period);
 
         // Alright we really have to start parsing arguments and acting on them lol
-        if ( frame > period) {
-            return 0;
-        }
+        // if ( frame > period) {
+        //     return 0;
+        // }
 
         geo->bindGeo();
         glUniform1f(glGetUniformLocation(program, "i_time"), time);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        Screenshot(0,0,width,height,frame);
+        // Screenshot(0,0,width,height,frame);
 
         SDL_GL_SwapWindow(window);
 
