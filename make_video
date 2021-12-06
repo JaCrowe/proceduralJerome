@@ -1,1 +1,11 @@
-ffmpeg -i audio/17_adult_keem.wav -framerate 60 -start_number 0 -i out/capture_%03d.png -c:v libx264 -r 60 -crf 10 -preset veryslow out.mp4 -async 1 -vsync 1
+ffmpeg \
+    -i audio/18_chip_chomper_nosynth.wav \
+    -framerate 60 \
+    -start_number 0 \
+    -i out/capture_%03d.png \
+    -c:v libx264 \
+    -r 60 \
+    -crf 10 \
+    -preset veryslow out.mp4 \
+    -async 1 \
+    -vsync 1
