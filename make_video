@@ -1,9 +1,14 @@
+#!/bin/bash
+
 ffmpeg \
     -i audio/18_chip_chomper_nosynth.wav \
-    -framerate 60 \
+    -framerate 30 \
     -start_number 0 \
     -i out/capture_%03d.png \
     -c:v libx264 \
+    -pix_fmt yuv420p \
+    -c:a aac \
+    -b:a 256k \
     -r 60 \
     -crf 10 \
     -preset veryslow out.mp4 \

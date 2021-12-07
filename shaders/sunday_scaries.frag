@@ -34,7 +34,7 @@ float maskSloppyStripes(vec2 uv, float time){
 
 float maskSpiral(vec2 uv, float time) {
     float r = length(uv);
-    float theta = atan(uv.y, uv.x);
+    float theta = atan(uv.y, uv.x) + 2.0*time;
 
     return smoothstep_c(
         0.3 + (0.5 + 0.2*sin(time))*sin(time*4.0),
@@ -50,24 +50,35 @@ void main(){
     vec2 uv = PERIOD*(gl_FragCoord.xy/i_resolution - 0.5);
     // uv.y = uv.y + normal_time;
 
-    float diffraction = maskSpiral(uv, normal_time);
 
 
     float r = length(uv);
     float theta = atan(uv.y, uv.x);
 
     vec3 color_nice = vec3(
-        0.5 + 0.5*sin(r/500.0),
-        0.5 + 0.5*cos(theta + normal_time),
-        0.5 + 0.5*sin(uv.y + 1.2 + normal_time)
+        0.1 + 0.5*sin(r/500.0),
+        0.4 + 0.2*cos(theta + normal_time),
+        0.4 + 0.2*sin(uv.y + 1.2 + normal_time)
     );
+
+
+    vec2 rotatedUV = vec2(
+        cos(-normal_time)*uv.x - sin(-normal_time)*uv.y,
+        sin(-normal_time)*uv.x + cos(-normal_time)*uv.y
+    );
+
+
+    float diffraction = maskSpiral(uv, normal_time);
+
+    color_nice += color_nice*0.02*diffraction;
 
 
     float sloppyMask = maskSloppyStripes(uv, normal_time);
 
     vec3 color_boring = vec3(
-       0.2+diffraction*0.8
+       diffraction
     );
+
 
 
     vec3 color_sloppy = vec3(
@@ -76,10 +87,17 @@ void main(){
         maskSpiral(uv, normal_time - 0.1)
     );
 
+
     vec3 color = mix(
         color_nice, 
         color_boring, 
         1.0 - sloppyMask
+    );
+
+    vec3 color_moist = mix(
+        color_boring, 
+        color_nice, 
+        1.0 - color_boring
     );
 
 
