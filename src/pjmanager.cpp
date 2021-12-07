@@ -97,7 +97,7 @@ int PJManager::initLoop(PJGeometry *geo)
 
         frame++;
 
-        int period = 1179;
+        int period = 642;
         // int period = 294;
         float time = (frame % period)*(1.0/period);
 

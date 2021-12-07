@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ffmpeg \
-    -i audio/18_chip_chomper_nosynth.wav \
-    -framerate 30 \
+    -i audio/01_aaron.wav \
+    -framerate 60 \
     -start_number 0 \
     -i out/capture_%03d.png \
     -c:v libx264 \
