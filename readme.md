@@ -42,6 +42,7 @@ On Ubuntu 21
 - libsdl2-image-dev
 - libavcodec-dev
 - libswscale-dev
+- libjack-jackd2-dev
 
 The OpenGL dependencies will be installed with libsdl. 
 
