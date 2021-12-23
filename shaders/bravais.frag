@@ -4,7 +4,7 @@ out vec4 o_color;
 uniform float i_time;
 uniform vec2 i_resolution;
 #define PI 3.14159265359
-#define PERIOD 48.
+#define PERIOD 16.
 
 // https://iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm
 vec2 sdLine( in vec2 p, in vec2 a, in vec2 b)
@@ -23,7 +23,7 @@ void main(){
 
 
     // This turns our rhombus lattice to a hexagonal lattice
-    float x0 =  0.25  + 0.2499*sin(4.*pi_time);
+    float x0 =  0.25 + 0.25/2. + 0.5*0.2499*max(-1, min(1, 3.0*sin(4.*pi_time)));
     // float x1 = 0.75 - 0.2499*sin(4.*pi_time);
     float x1 = 1.0 - x0;
 
@@ -40,9 +40,10 @@ void main(){
     vec2 r2_i = vec2(1.0, 1.0);
 
     // Capture frag coord into convenient UV variable, transform!
-    float allpha = 0.5*pow(sin(pi_time), 2.);
-    vec2 uv = (0.7 - 0.5*pow(sin(pi_time), 2.))
-        *PERIOD*(gl_FragCoord.xy/i_resolution.xy - 0.5);
+    float zoom = (1.0 - 0.07*pow(sin(pi_time), 2.));
+    vec2 drift = vec2(i_time, 0.1*sin(pi_time));
+    vec2 uv = zoom
+        *PERIOD*(gl_FragCoord.xy/i_resolution.xy - 0.5 + drift);
         //  + vec2(0.01*sin(6.*pi_time), i_time)*PERIOD;
 
 
@@ -112,8 +113,8 @@ void main(){
 
     float english_edge = 0.0;// 0.0 + 0.01*(0.5 - 0.5*cos(pi_time));
     // float english_edge = 0.0;
-    float english_margin = (0.003 + 0.0005*sin(2.*pi_time))*PERIOD; 
-
+    float english_margin = 0.045*zoom;// (0.003 + 0.0005*sin(2.*pi_time))*PERIOD; 
+    //float english_margin = 0.0001;
     // Line it up
     intensity = 1.0 - smoothstep(
         english_edge + english_margin,
@@ -122,9 +123,9 @@ void main(){
     );// + cos(6.*pi_time)*intensity;
 
     vec3 cell_color = vec3(
-        0.5 + 0.5*sin(indexUV.x + pi_time*5. + sin(indexUV.y)),
-        0.5 + 0.5*sin(indexUV.y - pi_time*2.0),
-        1.0
+        0.5 + 0.5*sin(indexUV.x + pi_time*6.*sin(pi_time) )*sin(pi_time*sin(pi_time)),
+        0.5 + 0.5*sin(indexUV.y - pi_time*2.0*sin(pi_time))*cos(pi_time),
+        0.0
     );
 
     vec3 cell_color_1 = vec3(
@@ -136,9 +137,20 @@ void main(){
         0.75 + 0.25*mod(indexUV.y + indexUV.x, 2.)
     );
 
+
+    vec3 cell_color_3 = vec3(
+        //0.8,//+ 0.5*pow(sin(indexUV.x/2. + 4.*pi_time), 2.),
+        0.5 + 0.5*sin(indexUV.y + 2.*pi_time)*sin(indexUV.y + 6.*pi_time),
+        // 0.5,
+        0.5 + 0.5*cos(indexUV.y/2. + 2.*pi_time),
+
+        // 0.5 + 0.5*sin(indexUV.y - pi_time*2.0),
+        1.0
+    );
+
     vec3 color_mix = mix(
         vec3(0.), 
-        cell_color_1, 
+        cell_color_3, 
         intensity
     );
 

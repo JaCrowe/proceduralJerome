@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ffmpeg \
-    -i audio/01_aaron.wav \
-    -framerate 60 \
+    -i audio/01_dapper_slapper.wav \
+    -framerate 30 \
     -start_number 0 \
     -i out/capture_%03d.png \
     -c:v libx264 \
@@ -10,7 +10,7 @@ ffmpeg \
     -c:a aac \
     -b:a 256k \
     -r 60 \
-    -crf 10 \
+    -crf 20 \
     -preset veryslow out.mp4 \
     -async 1 \
     -vsync 1
