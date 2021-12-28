@@ -30,6 +30,17 @@ std::string getFragmentShaderFilePath(int argc, char* argv[])
      return "";
 }
 
+std::string getAudioFilePath(int argc, char* argv[])
+{
+
+    for (int i = 0 ; i < argc ; i++) {
+        if (argv[i] == std::string("-a")) {
+            return argv[i+1];
+        }
+    }
+    return "";
+}
+
 bool checkSaveFrames(int argc, char* argv[])
 {
     for (int i = 0 ; i < argc ; i++) {
