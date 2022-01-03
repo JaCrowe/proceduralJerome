@@ -1,17 +1,18 @@
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <list>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GLES3/gl3.h>
-#include <iostream>
-#include <fstream>
-#include "pjshader.h"
-#include "pjmanager.h"
-#include "pjgeometry.h"
-#include <list>
-
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+#include "pjshader.h"
+#include "pjmanager.h"
+#include "pjgeometry.h"
+#include "pjaudiofile.h"
+
 
 #define GL_GLEXT_PROTOTYPES
 using namespace std;
@@ -20,9 +21,10 @@ std::string getFragmentShaderFilePath(int argc, char* argv[])
 {
 
     for (int i = 1 ; i < argc ; i++) {
-        if (argv[i][0] == '-') {
+        // Match so long as this arg or the previous don't start with a dash
+        if (argv[i][0] == '-' || argv[i-1][0] == '-') {
             continue;
-        } else {
+        } else{
             return argv[i];
         }
     }
@@ -30,7 +32,7 @@ std::string getFragmentShaderFilePath(int argc, char* argv[])
      return "";
 }
 
-std::string getAudioFilePath(int argc, char* argv[])
+std::string checkAudioFilePath(int argc, char* argv[])
 {
 
     for (int i = 0 ; i < argc ; i++) {
@@ -54,7 +56,6 @@ bool checkSaveFrames(int argc, char* argv[])
 
 int main(int argc, char *argv[])
 {
-
     std::string parsedFragmentShaderPath = getFragmentShaderFilePath(argc, argv);
     std::string fragmentShaderPath = parsedFragmentShaderPath.length() > 0 ? 
         parsedFragmentShaderPath : 
@@ -67,6 +68,13 @@ int main(int argc, char *argv[])
         cout << "Going to save those frames friend!" << endl;
     }
 
+    std::string doAudioFile = checkAudioFilePath(argc, argv);
+
+    if (doAudioFile.length() > 0) {
+        cout << "Going to match to an audio file!" << endl;
+        PJAudioFile *audioFile = new PJAudioFile(doAudioFile.c_str());
+        return 0;
+    }
 
     PJManager *pjManager = new PJManager(doSaveFrames);
 
