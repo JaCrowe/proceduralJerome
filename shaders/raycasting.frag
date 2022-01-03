@@ -1,7 +1,7 @@
 #version 400
 #define Z_MAX 0.7
 #define Z_MIN -0.7
-#define N_MARCHING_STEPS 16
+#define N_MARCHING_STEPS 64
 #define STEP_LENGTH (Z_MAX - Z_MIN)/N_MARCHING_STEPS
 
 in vec4 v_color;
@@ -52,20 +52,9 @@ float fbm(vec3 x) {
 	}
 	return v;
 }
-// --- /\
+// --- /\ Morgan McGuire zone
 
-
-// --- Ray casting functions
-
-float sphereDensity(vec3 position) {
-    vec3 scaledPosition = vec3(vec2(position), position.z*0.05);
-    return 
-        smoothstep(0.4, 0.3, length(scaledPosition))*fbm(scaledPosition*15.0);
-}
-
-float raySample(vec3 ray) {
-    return sphereDensity(ray);
-}
+// --- Helpers
 
 mat3 rotationMatrix(vec3 axis, float angle)
 {
@@ -78,6 +67,27 @@ mat3 rotationMatrix(vec3 axis, float angle)
                 oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
                 oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
 }
+
+// --- Ray casting functions
+
+float sphereDensity(vec3 position) {
+    return 1.0 - 1.5*length(position);
+    // return smoothstep(
+    //         0.5, 
+    //         0.49, 
+    //         length(position)
+    //     );
+}
+
+float fbmDensity(vec3 position) {
+    vec3 scaledPosition = vec3(vec2(position), position.z*0.05);
+    return fbm(10.0*rotationMatrix(vec3(0.0, 1.,0.), i_time)*scaledPosition);
+}
+
+float raySample(vec3 ray) {
+    return fbmDensity(ray)*sphereDensity(ray);
+}
+
 // --- The main show!
 
 void main() {
@@ -86,7 +96,7 @@ void main() {
     float intensity = 0.0;
 
     for (int i = 0 ; i < N_MARCHING_STEPS ; i++) {
-        intensity += raySample(
+        intensity += 3.*raySample(
             vec3(
                 coord.x,
                 coord.y, 
