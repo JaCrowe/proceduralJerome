@@ -1,7 +1,7 @@
 #version 400
 #define Z_MAX 0.7
 #define Z_MIN -0.7
-#define N_MARCHING_STEPS 64
+#define N_MARCHING_STEPS 16
 #define STEP_LENGTH (Z_MAX - Z_MIN)/N_MARCHING_STEPS
 
 in vec4 v_color;
@@ -9,7 +9,8 @@ out vec4 o_color;
 uniform float i_time;
 uniform vec2 i_resolution;
 
-// --- Morgan noise functions and lisence, guess I'm BSD compliant here lol
+// --- \/ Morgan noise functions and lisence
+
 // By Morgan McGuire @morgan3d, http://graphicscodex.com
 // Reuse permitted under the BSD license.
 
@@ -17,11 +18,6 @@ uniform vec2 i_resolution;
 // They are tuned to avoid visible periodicity for both positive and
 // negative coordinates within a few orders of magnitude.
 
-// For a single octave
-//#define NOISE noise
-
-// For multiple octaves
-#define NOISE fbm
 #define NUM_NOISE_OCTAVES 5
 
 // Precision-adjusted variations of https://www.shadertoy.com/view/4djSRW
@@ -71,6 +67,17 @@ float raySample(vec3 ray) {
     return sphereDensity(ray);
 }
 
+mat3 rotationMatrix(vec3 axis, float angle)
+{
+    axis = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float oc = 1.0 - c;
+    
+    return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
+}
 // --- The main show!
 
 void main() {
@@ -83,9 +90,8 @@ void main() {
             vec3(
                 coord.x,
                 coord.y, 
-                Z_MIN + float(i)*STEP_LENGTH
-            )
-        )/float(N_MARCHING_STEPS);
+                Z_MIN + STEP_LENGTH*float(i) 
+        ))/float(N_MARCHING_STEPS);
     }
 
     o_color = vec4(vec3(intensity), 1.0);
