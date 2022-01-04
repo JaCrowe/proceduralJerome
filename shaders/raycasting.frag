@@ -71,7 +71,7 @@ mat3 rotationMatrix(vec3 axis, float angle)
 // --- Ray casting functions
 
 float sphereDensity(vec3 position) {
-    return 1.0 - 1.5*length(position);
+    return 1.0 - length(position)*2.;
     // return smoothstep(
     //         0.5, 
     //         0.49, 
@@ -80,8 +80,9 @@ float sphereDensity(vec3 position) {
 }
 
 float fbmDensity(vec3 position) {
-    vec3 scaledPosition = vec3(vec2(position), position.z*0.05);
-    return fbm(10.0*rotationMatrix(vec3(0.0, 1.,0.), i_time)*scaledPosition);
+    // vec3 scaledPosition = vec3(position.x + i_time, position.y, position.z*0.05);
+    vec3 scaledPosition = vec3(position.x, position.y, position.z*0.05);
+    return fbm(10.0*(0.5 + 0.5*sin(i_time))*scaledPosition);
 }
 
 float raySample(vec3 ray) {
@@ -93,15 +94,24 @@ float raySample(vec3 ray) {
 void main() {
     vec2 coord =   gl_FragCoord.xy/i_resolution.xy - 0.5;
 
-    float intensity = 0.0;
+    float density = 0.0;
+    float absorption = 0.5;
+    float intensity = 1.0;
 
     for (int i = 0 ; i < N_MARCHING_STEPS ; i++) {
-        intensity += 3.*raySample(
+        density += 3.*raySample(
             vec3(
                 coord.x,
                 coord.y, 
                 Z_MIN + STEP_LENGTH*float(i) 
         ))/float(N_MARCHING_STEPS);
+
+        if (density > 0.) {
+            intensity *= 1.-density*absorption;
+            if (intensity < 0.01) {
+                break;
+            }
+        }
     }
 
     o_color = vec4(vec3(intensity), 1.0);
