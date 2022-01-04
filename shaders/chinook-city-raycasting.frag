@@ -82,7 +82,7 @@ float sphereDensity(vec3 position) {
 float fbmDensity(vec3 position) {
     // vec3 scaledPosition = vec3(position.x + i_time, position.y, position.z*0.05);
     vec3 scaledPosition = vec3(position.x, position.y, position.z*0.05);
-    return fbm(10.0*(0.5 - 0.5*cos(i_time))*rotationMatrix(vec3(1., 1., sin(i_time)), i_time)*scaledPosition);
+    return fbm(10.0*rotationMatrix(vec3(1.0, 0., 1.), i_time)*scaledPosition);
 }
 
 float raySample(vec3 ray) {
