@@ -72,7 +72,7 @@ mat3 rotationMatrix(vec3 axis, float angle)
 // --- Ray casting functions
 
 float sphereDensity(vec3 position) {
-    return 1.0 - length(position)*2.;
+    return 1.0 - length(position)*1.8;
     // return smoothstep(
     //         0.5, 
     //         0.49, 
@@ -104,8 +104,14 @@ void main() {
     float intensity = 1.0;
 
 
+    vec3 densityColor = vec3(0.5412, 0.8863, 0.5529);
+    vec3 destinyColor = vec3(0.1412, 0.4863, 0.4529);
+    vec3 dingingColor = vec3(0.8863, 0.5529, 0.5412);
+    vec3 brightRedishColor = vec3(0.9863, 0.7529, 0.7412);
     vec3 sunDirection = vec3(1.0, 0., 1.0);
+    
     vec3 color = vec3(0.);
+    // vec3 color = densityColor;
 
 
     for (int i = 0 ; i < N_MARCHING_STEPS ; i++) {
@@ -126,7 +132,7 @@ void main() {
 
             float scatter = 1.0;
 
-            color+= vec3(intensity)*density + vec3(1.,.7,.4)*80.*density*intensity*scatter;
+            color+= vec3(intensity)*density + dingingColor*180.*density*intensity*scatter;
         }
 
         // float intensityLighting = 0.0;

@@ -83,9 +83,9 @@ float sphereDensity(vec3 position) {
 float fbmDensity(vec3 position) {
     // vec3 scaledPosition = vec3(position.x + i_time, position.y, position.z*0.05);
     vec3 scaledPosition = vec3(
-        position.x + i_time*0.05, 
+        position.x + i_time, 
         position.y, 
-        position.z*0.5 + i_time*0.05);
+        position.z*0.5 + i_time);
     // return fbm(10.0*rotationMatrix(vec3(1.0, 0., 1.), i_time)*scaledPosition);
     return fbm(10.0*scaledPosition);
 }
@@ -100,7 +100,7 @@ void main() {
     vec2 coord =   gl_FragCoord.xy/i_resolution.xy - 0.5;
 
     float density = 0.0;
-    float absorption = 100.0;
+    float absorption = 200.0;
     float intensity = 1.0;
 
 
@@ -124,9 +124,7 @@ void main() {
                 break;
             }
 
-            float scatter = 1.0;
-
-            color+= vec3(intensity)*density + vec3(1.,.7,.4)*80.*density*intensity*scatter;
+            color+=vec3(intensity);
         }
 
         // float intensityLighting = 0.0;
