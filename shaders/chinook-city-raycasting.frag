@@ -10,7 +10,8 @@ out vec4 o_color;
 uniform float i_time;
 uniform vec2 i_resolution;
 
-// --- \/ Morgan noise functions and lisence
+
+// ---------------------------------------------------- NOISE FUNCTIONS ---
 
 // By Morgan McGuire @morgan3d, http://graphicscodex.com
 // Reuse permitted under the BSD license.
@@ -55,7 +56,7 @@ float fbm(vec3 x) {
 }
 // --- /\ Morgan McGuire zone
 
-// --- Helpers
+// ---------------------------------------------------- VECTOR MATH FUNCTIONS ---
 
 mat3 rotationMatrix(vec3 axis, float angle)
 {
@@ -69,15 +70,51 @@ mat3 rotationMatrix(vec3 axis, float angle)
                 oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
 }
 
-// --- Ray casting functions
+// ---------------------------------------------------- SHAPING FUNCTIONS ---
 
 float sphereDensity(vec3 position) {
-    return 1.0 - length(position)*2.;
+    // return 0.005 - pow(length(position)*0.5, 4.);
     // return smoothstep(
     //         0.5, 
     //         0.49, 
     //         length(position)
     //     );
+    return 1.;
+}
+
+float planeSDF(vec3 evalPoint, vec3 normal, vec3 pnot) {
+    // d a la wolfram
+    float d = -dot(normal, pnot);
+    return (
+        dot(evalPoint, normal) - d
+    )/sqrt(dot(normal, normal));
+}
+
+float planeDensity(vec3 position) {
+    // return 0.005 - pow(length(position)*0.5, 4.);
+    // return smoothstep(
+    //         0.5, 
+    //         0.49, 
+    //         length(position)
+    //     );
+
+    // Clip bottom plane
+
+    float d_0 = planeSDF(
+        position, 
+        normalize(vec3(0., 1.0, -0.5)), 
+        vec3(0.,-0.1,0.)
+    ) > 0. ? 0. : 1.;
+    // float d_0 = 1.;
+
+    // float d_1 = planeSDF(
+    //     position, 
+    //     normalize(vec3(0.05, -1.0, 0.05)), 
+    //     vec3(0.,0.45,0.)
+    // ) > 0. ? 0. : 1.;
+    float d_1 = 1.;
+
+    return d_0*d_1;
 }
 
 float fbmDensity(vec3 position) {
@@ -91,7 +128,7 @@ float fbmDensity(vec3 position) {
 }
 
 float raySample(vec3 ray) {
-    return fbmDensity(ray)*sphereDensity(ray);
+    return fbmDensity(ray)*sphereDensity(ray)*planeDensity(ray);
 }
 
 // --- The main show!
@@ -100,7 +137,7 @@ void main() {
     vec2 coord =   gl_FragCoord.xy/i_resolution.xy - 0.5;
 
     float density = 0.0;
-    float absorption = 12.;
+    float absorption = 10.;
     float intensity = 1.0;
 
 
