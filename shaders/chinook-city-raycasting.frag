@@ -100,7 +100,7 @@ void main() {
     vec2 coord =   gl_FragCoord.xy/i_resolution.xy - 0.5;
 
     float density = 0.0;
-    float absorption = 100.0;
+    float absorption = 12.;
     float intensity = 1.0;
 
 
@@ -126,7 +126,7 @@ void main() {
 
             float scatter = 1.0;
 
-            color+= vec3(intensity)*density + vec3(1.,.7,.4)*80.*density*intensity*scatter;
+            color+= vec3(intensity)*density + vec3(1.,.7,.4)*10.*density*intensity*scatter;
         }
 
         // float intensityLighting = 0.0;

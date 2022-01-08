@@ -1,0 +1,18 @@
+#!/bin/bash
+
+ffmpeg \
+    -stream_loop -1 \
+    -i audio/decent_intonation_tune.wav \
+    -framerate 30 \
+    -start_number 0 \
+    -i out/capture_%03d.png \
+    -shortest \
+    -c:v libx264 \
+    -pix_fmt yuv420p \
+    -c:a aac \
+    -b:a 256k \
+    -r 60 \
+    -crf 20 \
+    -preset veryslow out.mp4 \
+    -async 1 \
+    -vsync 1
