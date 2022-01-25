@@ -45,11 +45,10 @@ int PJAudioFile::loadfile(const char *filename)
     }
     else
     {
+        run_length_seconds = getWavRunLength(wav_spec, wav_length);
         /* Do stuff with the WAV data, and then... */
         printf(
-            "Length of audio is: %f\n",
-            getWavRunLength(wav_spec, wav_length));
-
+            "Length of audio is: %f\n", run_length_seconds);
         SDL_FreeWAV(wav_buffer);
         return 0;
     }

@@ -10,6 +10,7 @@ public:
     int loadfile(const char *filename);
     std::string getFileContents(std::ifstream &file);
     std::string fileContent;
+    double run_length_seconds;
     PJAudioFile(const char *_file_path);
 };
 

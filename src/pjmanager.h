@@ -59,5 +59,7 @@ public:
     void bindShaders(PJShader *shader);
     int initLoop(PJGeometry *geo);
 
+    int fps = 30;
+    double run_length = 10.0;
 };
 #endif

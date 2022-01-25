@@ -5,20 +5,18 @@
 #include <SDL2/SDL_image.h>
 
 void Screenshot(int x, int y, int w, int h, int frame)
-    {
-        char fName[50];
-        sprintf(fName, "out/capture_%03d.png", frame);
+{
+    char fName[50];
+    sprintf(fName, "out/capture_%03d.png", frame);
 
-        unsigned char * pixels = new unsigned char[w*h*4]; // 4 bytes for RGBA
-        glReadPixels(x,y,w, h, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
+    unsigned char *pixels = new unsigned char[w * h * 4]; // 4 bytes for RGBA
+    glReadPixels(x, y, w, h, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
 
-        SDL_Surface * surf = SDL_CreateRGBSurfaceFrom(pixels, w, h, 8*4, w*4, 0,0,0,0);
-        // SDL_SaveBMP(surf, filename);
-        IMG_SavePNG(surf, fName);
-        SDL_FreeSurface(surf);
-        delete [] pixels;
-    }
-
+    SDL_Surface *surf = SDL_CreateRGBSurfaceFrom(pixels, w, h, 8 * 4, w * 4, 0, 0, 0, 0);
+    IMG_SavePNG(surf, fName);
+    SDL_FreeSurface(surf);
+    delete[] pixels;
+}
 
 void PJManager::initSDL()
 {
@@ -97,15 +95,10 @@ int PJManager::initLoop(PJGeometry *geo)
 
         frame++;
 
-        // FOR MY LITTLE BASS TUNE WE WANT 992 FRAMES AT 30FPS!
-
-        // int period = 638/2;
-        int period = 992;
-        // int period = 294;
-        // float time = (frame % period)*(1.0/period);
-        float time = frame / 20.0;
-        // Alright we really have to start parsing arguments and acting on them lol
-        if ( (frame > period) && saveOutput) {
+        int period = int(run_length) * fps;
+        double time = double(frame) / double(period);
+        if ((frame > period) && saveOutput)
+        {
             return 0;
         }
 
@@ -113,9 +106,9 @@ int PJManager::initLoop(PJGeometry *geo)
         glUniform1f(glGetUniformLocation(program, "i_time"), time);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
-        if (saveOutput) {
-            Screenshot(0,0,width,height,frame);
+        if (saveOutput)
+        {
+            Screenshot(0, 0, width, height, frame);
         }
 
         SDL_GL_SwapWindow(window);
