@@ -6,4 +6,4 @@ all:
 		src/pjgeometry.cpp \
 		src/pjaudiofile.cpp \
 		-o procedural_jerome \
-		-ljack -lSDL2 -lSDL2_image -lGL
+		-ljack -lSDL2 -lSDL2_image -lGL -lfftw3

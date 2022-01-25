@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <SDL2/SDL.h>
+#include <fftw3.h>
 // #include <SDL2/SDL_opengl.h>
 // #include <SDL2/SDL_image.h>
 using namespace std;
@@ -38,6 +39,18 @@ int PJAudioFile::loadfile(const char *filename)
         return 1;
     } else {
         /* Do stuff with the WAV data, and then... */
+        printf("Length of audio is: %d, %d, %d, %d, %d, %d, %d, %d, %f\n", 
+            wav_spec.freq, 
+            wav_spec.samples, 
+            wav_spec.freq,
+            wav_spec.format,
+            wav_spec.size,
+            wav_spec.channels,
+            wav_spec.padding,
+            wav_length,
+            double(wav_length)/double(wav_spec.freq)/60.
+        );
+
         SDL_FreeWAV(wav_buffer);
         return 0;
     }
