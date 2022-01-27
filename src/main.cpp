@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         cout << "Going to match to an audio file!" << endl;
         PJAudioFile *audioFile = new PJAudioFile(doAudioFile.c_str());
         pjManager->run_length = audioFile->run_length_seconds;
-        return 0;
+        // return 0;
     }
 
     PJShader *pjShader = new PJShader();

@@ -96,7 +96,8 @@ int PJManager::initLoop(PJGeometry *geo)
         frame++;
 
         int period = int(run_length) * fps;
-        double time = double(frame) / double(period);
+        double time = 10.0 * double(frame) / double(period);
+
         if ((frame > period) && saveOutput)
         {
             return 0;
