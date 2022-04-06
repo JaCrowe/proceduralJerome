@@ -5,5 +5,6 @@ all:
 		src/pjmanager.cpp \
 		src/pjgeometry.cpp \
 		src/pjaudiofile.cpp \
+		src/pjaudioanalysis.cpp \
 		-o procedural_jerome \
 		-ljack -lSDL2 -lSDL2_image -lGL -lfftw3

@@ -1,4 +1,5 @@
 #include "pjaudiofile.h"
+#include "pjaudioanalysis.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -49,6 +50,7 @@ int PJAudioFile::loadfile(const char *filename)
         /* Do stuff with the WAV data, and then... */
         printf(
             "Length of audio is: %f\n", run_length_seconds);
+        PJAudioAnalysis *anal = new PJAudioAnalysis(wav_buffer, wav_length);
         SDL_FreeWAV(wav_buffer);
         return 0;
     }
